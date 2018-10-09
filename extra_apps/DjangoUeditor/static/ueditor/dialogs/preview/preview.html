@@ -18,8 +18,8 @@
             }
             #preview *{font-family:sans-serif;font-size:16px;}
         </style>
-        <script type="text/javascript" src="../internal.js"></script>
-        <script src="../../ueditor.parse.js"></script>
+        <script type="text/javascript" src="/static/internal.js"></script>
+        <script src="/static//static/ueditor.parse.js"></script>
         <title></title>
     </head>
     <body class="view">
@@ -30,7 +30,7 @@
     <script>
         document.getElementById('preview').innerHTML = editor.getContent();
         uParse('#preview',{
-            rootPath : '../../',
+            rootPath : '/static//static/',
             chartContainerHeight:500
         })
         dialog.oncancel = function(){

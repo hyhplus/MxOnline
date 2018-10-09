@@ -4,7 +4,7 @@
 <head>
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <script src="../ueditor.parse.js" type="text/javascript"></script>
+    <script src="/static/ueditor.parse.js" type="text/javascript"></script>
     <title></title>
 </head>
 <body>
@@ -69,10 +69,10 @@
      customRule 可以传入你自己的处理规则函数，函数第一个参数是容器节点
      */
     uParse('#content1',{
-        rootPath : '../'
+        rootPath : '/static/'
     })
     uParse('#content2',{
-        rootPath : '../',
+        rootPath : '/static/',
         tableSortCompareFn: function(td1, td2){
             var value1 = td1.innerText||td1.textContent,
                     value2 = td2.innerText||td2.textContent;
