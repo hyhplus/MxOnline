@@ -15,12 +15,13 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.conf.urls import url
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
 import xadmin
 
-from users.views import LoginView, RegisterView
+from users.views import LoginView, RegisterView, ActiveUserView, LogoutView
+from users.views import ForgetPwdView, ResetView, ModifyPwdView
 
 urlpatterns = [
     # 将admin换为xadmin
@@ -36,6 +37,20 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
 
     # 验证码url
-    path("captcha/", include('captcha.urls'))
+    path("captcha/", include('captcha.urls')),
 
+    # 邮件激活的url
+    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name='user_active'),
+
+    # 忘记密码url
+    path('forget/', ForgetPwdView.as_view(), name='forget_pwd'),
+
+    # 重置密码url: 用来接收 来自邮箱的重置链接
+    re_path('reset/(?P<active_code>.*)/', ResetView.as_view(), name='reset_pwd'),
+
+    # 修改密码url; 用于password, reset页面提交表单
+    path('modify_pwd/', ModifyPwdView.as_view(), name='modify_pwd'),
+
+    # 退出功能url
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]

@@ -34,6 +34,12 @@ ALLOWED_HOSTS = []
 # 此处重载是为了使我们的UserProfile生效
 AUTH_USER_MODEL = 'users.UserProfile'
 
+
+# 设置邮箱和用户名均可登录
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -56,13 +62,15 @@ INSTALLED_APPS = [
     # 验证码app
     'captcha',
 
+    # 富文本编辑器
+    'DjangoUeditor',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -82,6 +90,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                "django.template.context_processors.i18n",
+                'django.template.context_processors.media',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -152,3 +164,19 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+
+# 发送邮件的setting设置
+
+EMAIL_HOST = "smtp.qq.com"                  # SMTP服务器主机
+EMAIL_PORT = 25                             # 端口
+EMAIL_HOST_USER = "1825260046@qq.com"       # 邮箱地址
+EMAIL_HOST_PASSWORD = "funpppbaexdjdjgf"    # 授权码
+EMAIL_USE_TLS= True
+EMAIL_FROM = "1825260046@qq.com"            # 邮箱地址
+
+
+# 设置我们上传文件的路径
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
