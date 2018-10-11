@@ -17,15 +17,17 @@ Including another URLconf
 from django.conf.urls import url
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
+from django.views.static import serve
 
 import xadmin
 
 from users.views import LoginView, RegisterView, ActiveUserView, LogoutView
 from users.views import ForgetPwdView, ResetView, ModifyPwdView
+from MxOnline.settings import MEDIA_ROOT
 
 urlpatterns = [
-    # 将admin换为xadmin
-    path('xadmin/', xadmin.site.urls),
+    # 将admin换为x-admin
+    path('x-admin/', xadmin.site.urls),
 
     # 首页    TemplateView.as_view 会将 template 转换为 view
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
@@ -53,4 +55,12 @@ urlpatterns = [
 
     # 退出功能url
     path('logout/', LogoutView.as_view(), name='logout'),
+
+
+    # 课程机构app的url配置
+    path('org/', include('organization.urls', namespace='org')),
+
+    # 处理上传图片显示url, 使用Django自带的serve
+    re_path('media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
+
 ]

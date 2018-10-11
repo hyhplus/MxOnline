@@ -5,6 +5,8 @@ from django.db import models
 
 from courses.models import Course
 from users.models import UserProfile
+from organization.models import CourseOrg
+
 
 # Create your models here.
 class UserAsk(models.Model):
@@ -59,9 +61,10 @@ class UserFavorite(models.Model):
     # teacher = models.ForeignKey()
     # org = models.ForeignKey()
 
-    # 直接保存用户的id.
+    # 直接保存用户的id
     fav_id = models.IntegerField(default=0)
-    # 表明收藏的是哪种类型。
+
+    # 表明收藏的是哪种类型
     fav_type = models.IntegerField(
         choices=TYPE_CHOICES,
         default=1,

@@ -2,6 +2,8 @@ from datetime import datetime
 
 from django.db import models
 
+from organization.models import CourseOrg
+
 
 # Create your models here.
 class Course(models.Model):
@@ -28,6 +30,10 @@ class Course(models.Model):
     click_nums = models.IntegerField(verbose_name='点击数', default=0)
     add_time = models.DateTimeField(verbose_name='添加时间',
                                     default=datetime.now)
+
+    course_org = models.ForeignKey(CourseOrg, verbose_name='所属机构',
+                                   null=True, blank=True,
+                                   on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = '课程信息'
