@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.db import models
 
-from organization.models import CourseOrg
+from organization.models import CourseOrg, Teacher
 
 
 # Create your models here.
@@ -19,7 +19,8 @@ class Course(models.Model):
     name = models.CharField(verbose_name='课程名', max_length=50)
     desc = models.CharField(verbose_name='课程描述', max_length=300)
     detail = models.TextField(verbose_name='课程详情')
-    degree = models.CharField(choices=DEGREE_CHOICES, max_length=2)
+    degree = models.CharField(verbose_name='难度', choices=DEGREE_CHOICES,
+                              max_length=2)
     learn_times = models.IntegerField(verbose_name='学习时长(分钟数)',
                                       default=0)
     students = models.IntegerField(verbose_name='学习人数', default=0)
@@ -34,6 +35,21 @@ class Course(models.Model):
     course_org = models.ForeignKey(CourseOrg, verbose_name='所属机构',
                                    null=True, blank=True,
                                    on_delete=models.CASCADE)
+    # 添加外键：讲师
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE,
+                                verbose_name="讲师",
+                                null=True, blank=True)
+    # 添加课程类别
+    category = models.CharField(verbose_name='课程类别', max_length=20,
+                                default='Python开发')
+    tag = models.CharField(verbose_name='课程标签', max_length=15,
+                           default='')
+    # 添加其他字段
+    you_need_know = models.CharField(verbose_name='课程须知', max_length=300,
+                                     default='一颗勤学的心是本课程必要的前提')
+    teacher_tell = models.CharField(verbose_name='老师告诉你', max_length=300,
+                                    default='什么都可以学到，按时交作业，不然叫家长')
+    is_banner = models.BooleanField(verbose_name='是否轮播', default=False)
 
     class Meta:
         verbose_name = '课程信息'
@@ -41,6 +57,18 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_zj_nums(self):
+        # 获取课程章节数的方法
+        return self.lesson_set.all().count()
+
+    # 获取学习这门课程的用户
+    def get_learn_users(self):
+        # 谁的里面添加了它做外键，他都可以取出来
+        return self.usercourse_set.all()[:5]
+
+    def get_teacher_nums(self):
+        return  self.lesson_set.all().count()
 
 
 class Lesson(models.Model):
@@ -70,6 +98,8 @@ class Video(models.Model):
     name = models.CharField(verbose_name='视频名', max_length=100)
     add_time = models.DateTimeField(verbose_name='添加时间',
                                     default=datetime.now)
+    url = models.CharField(verbose_name='访问地址', max_length=200,
+                           default='/media/text.mp4')
 
     class Meta:
         verbose_name = '视频'
