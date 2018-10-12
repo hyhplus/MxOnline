@@ -180,7 +180,7 @@ class ForgetPwdView(View):
 
 class ResetView(View):
     """
-    重置密码的`view`
+    重置密码的`view` 接收邮件显示此页面, 处理get逻辑
     """
     def get(self, request, active_code):
         # 查询邮箱验证记录是否存在
@@ -202,7 +202,7 @@ class ResetView(View):
 
 class ModifyPwdView(View):
     """
-    修改密码的`view`
+    修改密码的`view`, 处理post提交逻辑
     """
     def post(self, request):
         modifyPwd_form = ModifyPwdForm(request.POST)
@@ -226,7 +226,7 @@ class ModifyPwdView(View):
         else:
             email = request.POST.get("email", "")
             return render(request, "users/password_reset.html",
-                          {"email": email, "modiypwd_form": modifyPwd_form})
+                          {"email": email, "modifyPwd_form": modifyPwd_form})
 
 
 class LogoutView(View):

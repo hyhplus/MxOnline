@@ -63,4 +63,7 @@ urlpatterns = [
     # 处理上传图片显示url, 使用Django自带的serve
     re_path('media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
 
+    # 课程app的url配置
+    path('course/', include('courses.urls', namespace='course')),
+
 ]
