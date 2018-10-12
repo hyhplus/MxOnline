@@ -289,23 +289,30 @@ class TeacherDetailView(View):
         #               })
 
         all_course = Course.objects.filter(teacher=teacher)
+
+
         # 教师收藏和机构收藏
         has_teacher_faved = False
-        if UserFavorite.objects.filter(user=request.user, fav_type=3,
-                                       fav_id=teacher.id):
-            has_teacher_faved = True
-
         has_org_faved = False
-        if UserFavorite.objects.filter(user=request.user,
-                                       fav_type=2,
-                                       fav_id=teacher.org.id):
-            has_org_faved = True
+
+        # 必须是用户已登录我们才需要判断
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_type=3,
+                                           fav_id=teacher.id):
+                has_teacher_faved = True
+
+            if UserFavorite.objects.filter(user=request.user,
+                                           fav_type=2,
+                                           fav_id=teacher.org.id):
+                has_org_faved = True
+
+
         # 讲师排行榜
         sorted_teacher = Teacher.objects.all().order_by('-click_nums')[:3]
         return render(request,'org/teacher-detail.html',{
-            'teacher':teacher,
-            'all_course':all_course,
-            'sorted_teacher':sorted_teacher,
-            'has_teacher_faved':has_teacher_faved,
-            'has_org_faved':has_org_faved,
+            'teacher': teacher,
+            'all_course': all_course,
+            'sorted_teacher': sorted_teacher,
+            'has_teacher_faved': has_teacher_faved,
+            'has_org_faved': has_org_faved,
         })
