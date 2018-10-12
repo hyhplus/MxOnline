@@ -21,7 +21,7 @@ class AddFavView(View):
         # 判断用户是否登录，即使没登录会有一个匿名的user
         if not request.user.is_authenticated:
 
-            return HttpResponse("{'status': 'fail', 'msg': '用户未登录'}",
+            return HttpResponse('{"status": "fail", "msg": "用户未登录"}',
                                 content_type='application/json')
 
         exist_records = UserFavorite.objects.filter(user=request.user, fav_id=int(id),
@@ -50,7 +50,7 @@ class AddFavView(View):
                     teacher.fav_nums = 0
                 teacher.save()
 
-            return HttpResponse("{'status': 'success', 'msg': '收藏'}",
+            return HttpResponse('{"status": "success", "msg": "收藏"}',
                                 content_type='application/json')
 
         else:
@@ -77,8 +77,8 @@ class AddFavView(View):
                     teacher.fav_nums += 1
                     teacher.save()
 
-                return HttpResponse("{'status': 'success', 'msg': '已收藏'}",
+                return HttpResponse('{"status": "success", "msg": "已收藏"}',
                                     content_type='application/json')
             else:
-                return HttpResponse("{'status': 'fail', 'msg': '收藏失败'}",
+                return HttpResponse('{"status": "fail", "msg": "收藏失败"}',
                                     content_type='application/json')

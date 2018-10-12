@@ -66,4 +66,8 @@ urlpatterns = [
     # 课程app的url配置
     path('course/', include('courses.urls', namespace='course')),
 
+
+    # 用户app的url配置
+    path('users/', include('users.urls', namespace='users')),
+
 ]

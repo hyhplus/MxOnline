@@ -156,14 +156,14 @@ function add_fav(current_elem, fav_id, fav_type){
             xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
         },
         success: function(data) {
-            if(data.status = 'fail'){
-                if(data.msg = '用户未登录'){
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
                     window.location.href="{% url 'login' %}?next={{ request.path }}";
                 }else{
                     alert(data.msg)
                 }
 
-            }else if(data.status = 'success'){
+            }else if(data.status == 'success'){
                 current_elem.text(data.msg)
             }
         },

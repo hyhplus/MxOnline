@@ -97,12 +97,14 @@ class AddUserAskView(View):
             # 这样就不需要把一个一个字段取出来然后存到model的对象中之后save
             userask_form.save(commit=True)
 
-            # 保存成功，返回json字符串，后面conntent_type是告诉浏览器的
+            # 保存成功，返回json字符串，后面content_type是告诉浏览器的
+            # 注意: 这里只能单引号'' 包含双引号""  '{"",""}'
             return HttpResponse('{"status":"success"}', content_type='application/json')
         else:
             # 如果保存失败，返回json字符串,并将form的报错信息通过msg传递到前端
-            return HttpResponse('{"status":"fail", "msg":"添加出错"}',
-                                content_type='application/json')
+            # 注意: 这里只能单引号'' 包含双引号""  '{"",""}'
+            return HttpResponse('{"status":"fail", "msg":"添加出错"}', content_type='application/json')
+
 
 # return HttpResponse("{'status': 'fail', 'msg': {0}}".format(userask_form.errors),
 #                     content_type='application/json')
@@ -287,23 +289,30 @@ class TeacherDetailView(View):
         #               })
 
         all_course = Course.objects.filter(teacher=teacher)
+
+
         # 教师收藏和机构收藏
         has_teacher_faved = False
-        if UserFavorite.objects.filter(user=request.user, fav_type=3,
-                                       fav_id=teacher.id):
-            has_teacher_faved = True
-
         has_org_faved = False
-        if UserFavorite.objects.filter(user=request.user,
-                                       fav_type=2,
-                                       fav_id=teacher.org.id):
-            has_org_faved = True
+
+        # 必须是用户已登录我们才需要判断
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_type=3,
+                                           fav_id=teacher.id):
+                has_teacher_faved = True
+
+            if UserFavorite.objects.filter(user=request.user,
+                                           fav_type=2,
+                                           fav_id=teacher.org.id):
+                has_org_faved = True
+
+
         # 讲师排行榜
         sorted_teacher = Teacher.objects.all().order_by('-click_nums')[:3]
         return render(request,'org/teacher-detail.html',{
-            'teacher':teacher,
-            'all_course':all_course,
-            'sorted_teacher':sorted_teacher,
-            'has_teacher_faved':has_teacher_faved,
-            'has_org_faved':has_org_faved,
+            'teacher': teacher,
+            'all_course': all_course,
+            'sorted_teacher': sorted_teacher,
+            'has_teacher_faved': has_teacher_faved,
+            'has_org_faved': has_org_faved,
         })
