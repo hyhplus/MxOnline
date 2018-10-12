@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'organization.apps.OrganizationConfig',
     'operation.apps.OperationConfig',
 
-    # Xadmin相关app
+    # X-admin相关app
     'xadmin',
     'crispy_forms',
 

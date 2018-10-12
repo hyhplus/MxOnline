@@ -99,7 +99,7 @@ class Video(models.Model):
     add_time = models.DateTimeField(verbose_name='添加时间',
                                     default=datetime.now)
     url = models.CharField(verbose_name='访问地址', max_length=200,
-                           default='http://baidu.com/')
+                           default='/media/text.mp4')
 
     class Meta:
         verbose_name = '视频'
