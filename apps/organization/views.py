@@ -96,10 +96,12 @@ class AddUserAskView(View):
             # 这样就不需要把一个一个字段取出来然后存到model的对象中之后save
             userask_form.save(commit=True)
 
-            # 保存成功，返回json字符串，后面conntent_type是告诉浏览器的
+            # 保存成功，返回json字符串，后面content_type是告诉浏览器的
+            # 注意: 这里只能单引号'' 包含双引号""  '{"",""}'
             return HttpResponse('{"status":"success"}', content_type='application/json')
         else:
             # 如果保存失败，返回json字符串,并将form的报错信息通过msg传递到前端
+            # 注意: 这里只能单引号'' 包含双引号""  '{"",""}'
             return HttpResponse('{"status":"fail", "msg":"添加出错"}', content_type='application/json')
 
             # return HttpResponse("{'status': 'fail', 'msg': {0}}".format(userask_form.errors),

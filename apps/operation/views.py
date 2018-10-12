@@ -77,7 +77,7 @@ class AddFavView(View):
                     teacher.fav_nums += 1
                     teacher.save()
 
-                return HttpResponse("{'status': 'success', 'msg': '已收藏'}",
+                return HttpResponse('{"status": "success", "msg": "已收藏"}',
                                     content_type='application/json')
             else:
                 return HttpResponse("{'status': 'fail', 'msg': '收藏失败'}",
