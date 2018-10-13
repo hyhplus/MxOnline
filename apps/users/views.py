@@ -274,3 +274,23 @@ class IndexView(View):
                           'banner_courses': banner_courses,
                           'course_org': course_org,
                       })
+
+
+def page_not_found(request):
+    """
+    基于方法的404页面对应的`view`
+    """
+    from django.shortcuts import render_to_response
+    response = render_to_response('status/404.html', {})
+
+    # 设置response的状态码
+    response.status_code = 404
+    return response
+
+
+def page_error(request):
+    # 全局500处理函数
+    from django.shortcuts import render_to_response
+    response = render_to_response('status/500.html', {})
+    response.status_code = 500
+    return response

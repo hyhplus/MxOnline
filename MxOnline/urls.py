@@ -23,7 +23,7 @@ import xadmin
 
 from users.views import LoginView, RegisterView, ActiveUserView, LogoutView
 from users.views import ForgetPwdView, ResetView, ModifyPwdView, IndexView
-from MxOnline.settings import MEDIA_ROOT
+from MxOnline.settings import MEDIA_ROOT, STATICFILES_DIRS
 
 urlpatterns = [
     # 将admin换为x-admin
@@ -72,4 +72,13 @@ urlpatterns = [
     # 用户app的url配置
     path('users/', include('users.urls', namespace='users')),
 
+    #静态文件
+    re_path(r'^static/(?P<path>.*)', serve, {"document_root": STATICFILES_DIRS[0] }),
+
 ]
+
+# 全局404页面配置
+handler404 = 'users.views.page_not_found'
+
+# 全局500页面配置
+handler500 = 'users.views.page_error'

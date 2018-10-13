@@ -29,8 +29,10 @@ def random_str(random_length=8):
 
 def send_register_email(email, send_type='register'):
     """
-    发送注册邮件
-    发送之前先保存到数据库
+    默认send_type='register'，其他方式重载即可更换send_type='xxxx'
+    发送激活邮箱： 注册，忘记密码，修改邮箱等逻辑
+    发送之前先保存到数据库，其中修改邮箱时验证码设置为4位
+    特别注意：这里的数据保存在数据库，特别是验证码
     """
     email_record = EmailVerifyRecord()
 
@@ -47,8 +49,8 @@ def send_register_email(email, send_type='register'):
     email_record.save()
 
     # 定义邮件内容
-    email_title = 'MxOnline激活邮件'
-    email_body = ''
+    # email_title = 'MxOnline激活邮件'
+    # email_body = ''
 
     if send_type == 'register':
         email_title = 'MxOnline 注册激活链接'
@@ -78,9 +80,14 @@ def send_register_email(email, send_type='register'):
         msg = EmailMessage(email_title, email_body, EMAIL_FROM, [email])
         msg.content_subtype = 'html'
         send_status = msg.send()
+        if send_status:
+            pass
 
     elif send_type == 'update_email':
-        code = random_str(4)
+        # 上面写了code并保存了，这里只需引用code即可，不能再写code=rand_str(4)了，
+        # 否则无法验证有效的验证码, 因为code被重新random了，
+        # 而且这个code不是数据库这条记录的code了。
+
         email_title = "mx慕课小站 修改邮箱验证码"
         email_body = loader.render_to_string(
             "user_center/email_update.html",  # 需要渲染的html模板

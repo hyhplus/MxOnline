@@ -121,6 +121,7 @@ class UpdateEmailView(LoginRequiredMixin, View):
 
         existed_records = EmailVerifyRecord.objects.filter(
                             email=email, code=code, send_type='update_email')
+
         if existed_records:
             user = request.user
             user.email = email
