@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
+
 # Create your models here.
 class UserProfile(AbstractUser):
     """
@@ -37,6 +38,15 @@ class UserProfile(AbstractUser):
         """
         return self.username
 
+    def unread_nums(self):
+        """
+        页面顶部的小喇叭
+        获取用户未读消息的数量
+        这里导入`UserMessage`, 不能放在外面，否则会报错
+        """
+        from operation.models import UserMessage
+        return UserMessage.objects.filter(has_read=False, user=self.id).count()
+
 
 class EmailVerifyRecord(models.Model):
     """
@@ -50,7 +60,7 @@ class EmailVerifyRecord(models.Model):
 
     code = models.CharField(verbose_name='验证码', max_length=20)
     email = models.EmailField(verbose_name='邮箱', max_length=50)
-    send_type = models.CharField(choices=SEND_CHOICES, max_length=10)
+    send_type = models.CharField(choices=SEND_CHOICES, max_length=20)
 
     # 注意：这里的now没有(),因为now()是创建字段的时间，而不是实例化的时间
     send_time = models.DateTimeField(default=datetime.now)

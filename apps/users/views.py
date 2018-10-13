@@ -7,9 +7,12 @@ from django.urls import reverse
 from django.views.generic.base import View
 from django.db.models import Q
 
+from courses.models import Course
+from organization.models import CourseOrg
 from .forms import LoginForm, RegisterForm, ForgetForm
 from .forms import ActiveForm, ModifyPwdForm
-from .models import UserProfile, EmailVerifyRecord
+from .models import UserProfile, EmailVerifyRecord, Banner
+from operation.models import UserMessage
 from utils.email_send import send_register_email
 
 
@@ -38,7 +41,8 @@ class RegisterView(View):
     def get(self, request):
         # 添加验证码
         register_form = RegisterForm()
-        return render(request, 'users/register.html', {'register_form': register_form})
+        return render(request, 'users/register.html',
+                      {'register_form': register_form})
 
     def post(self, request):
         # 实例化form
@@ -56,6 +60,8 @@ class RegisterView(View):
             user_profile = UserProfile()
             user_profile.username = user_name
             user_profile.email = user_name
+
+            # 默认激活状态为False, 邮箱验证成功后为True-->这时才能登入系统
             user_profile.is_active = False
 
             user_profile.password = make_password(pass_word)
@@ -64,6 +70,12 @@ class RegisterView(View):
 
             # 发送激活邮箱
             send_register_email(user_name, 'register')
+
+            # 写入欢迎注册的消息
+            user_message = UserMessage()
+            user_message.user = user_profile.id
+            user_message.message = '欢迎注册mx慕课小站-mx在线学习交流平台。[系统自动消息]'
+            user_message.save()
 
             return render(request, 'login.html')
 
@@ -234,5 +246,31 @@ class LogoutView(View):
     用户登出
     """
     def get(self, request):
+        # django有自带的logout()
+        # 退出后重定向到首页
         logout(request)
         return HttpResponseRedirect(reverse('index'))
+
+
+class IndexView(View):
+    """
+    首页
+    """
+    def get(self, request):
+        # 取出轮播图
+        all_banner = Banner.objects.all().order_by('index')[:5]
+        # 普通列表位置的课程
+        courses = Course.objects.filter(is_banner=False)[:6]
+
+        # 轮播图课程取3个
+        banner_courses = Course.objects.filter(is_banner=True)[:3]
+
+        # 课程机构
+        course_org = CourseOrg.objects.all()[:15]
+        return render(request, 'index.html',
+                      {
+                          'all_banner': all_banner,
+                          'courses': courses,
+                          'banner_courses': banner_courses,
+                          'course_org': course_org,
+                      })

@@ -65,10 +65,9 @@ class UserFavorite(models.Model):
     fav_id = models.IntegerField(default=0)
 
     # 表明收藏的是哪种类型
-    fav_type = models.IntegerField(
-        choices=TYPE_CHOICES,
-        default=1,
-        verbose_name='收藏类型')
+    fav_type = models.IntegerField(choices=TYPE_CHOICES,
+                                   default=1,
+                                   verbose_name='收藏类型')
     add_time = models.DateTimeField(verbose_name='收藏时间',
                                     default=datetime.now)
 

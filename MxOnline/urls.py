@@ -22,7 +22,7 @@ from django.views.static import serve
 import xadmin
 
 from users.views import LoginView, RegisterView, ActiveUserView, LogoutView
-from users.views import ForgetPwdView, ResetView, ModifyPwdView
+from users.views import ForgetPwdView, ResetView, ModifyPwdView, IndexView
 from MxOnline.settings import MEDIA_ROOT
 
 urlpatterns = [
@@ -30,7 +30,8 @@ urlpatterns = [
     path('x-admin/', xadmin.site.urls),
 
     # 首页    TemplateView.as_view 会将 template 转换为 view
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    # path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    path('', IndexView.as_view(), name='index'),
 
     # 基于类的方式实现登录,这里是调用它的方法
     path('login/', LoginView.as_view(), name='login'),
@@ -62,6 +63,7 @@ urlpatterns = [
 
     # 处理上传图片显示url, 使用Django自带的serve
     re_path('media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
+
 
     # 课程app的url配置
     path('course/', include('courses.urls', namespace='course')),

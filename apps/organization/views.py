@@ -118,6 +118,9 @@ class OrgHomeView(View):
         # 根据id取值到课程机构
         course_org = CourseOrg.objects.get(id=int(org_id))
 
+        course_org.click_nums += 1
+        course_org.save()
+
         # 通过课程机构找到课程，内建的变量，找到指定这个字段的外键引用
         all_courses = course_org.course_set.all()[:4]
         all_teacher = course_org.course_set.all()[:2]
