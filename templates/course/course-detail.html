@@ -46,7 +46,7 @@
 							<li class="piclist"><span class="pram word4">学习用户：</span>
                                     {% for user_course in course.usercourse_set.get_queryset|slice:":5"%}
                                                                             <span class="pic"><img width="40" height="40" src="{{ MEDIA_URL }}{{ user_course.user.image }}"/></span>
-                                {% endfor %}
+                                    {% endfor %}
 
 
 							</li>
@@ -121,9 +121,12 @@
 					</ul>
 				</div>
 				<div class="tab_cont tab_cont1">
+
+                    {# 这里关闭Ｄjango自定义转义，是为了显示富文本编辑用的 #}
                     {% autoescape off %}
 {{ course.detail }}
                     {% endautoescape %}
+
 				</div>
 				<div class="tab_cont tab_cont2" >
 					<div class="comment">

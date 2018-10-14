@@ -75,6 +75,9 @@ urlpatterns = [
     #静态文件
     re_path(r'^static/(?P<path>.*)', serve, {"document_root": STATICFILES_DIRS[0] }),
 
+    # 富文本编辑器url
+    path('ueditor/', include('DjangoUeditor.urls')),
+
 ]
 
 # 全局404页面配置

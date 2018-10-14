@@ -5,6 +5,22 @@ from .models import Course, Lesson, Video, CourseResource
 import xadmin
 
 
+class LessInline(object):
+    """
+    添加课程时，可以添加章节
+    """
+    model = Lesson
+    extra = 0
+
+
+class CourseResourceInline(object):
+    """
+    添加课程时，同时可以添加课程资源
+    """
+    model = CourseResource
+    extra = 0
+
+
 class CourseAdmin(object):
     """
     # 显示的列   list_display
@@ -24,6 +40,9 @@ class CourseAdmin(object):
         'degree', 'learn_times',
         'students'
     ]
+
+    # 增加章节和课程资源
+    inlines = [LessInline, CourseResourceInline]
 
 
 class LessonAdmin(object):

@@ -144,7 +144,7 @@ class OrgCourseView(View):
         # 通过课程机构找到课程。内建的变量，找到指向这个字段的外键引用
         all_courses = course_org.course_set.all()
 
-        return render(request, 'org/org-detail-homepage.html',
+        return render(request, 'org/org-detail-course.html',
                       {
                           'all_courses': all_courses,
                           'course_org': course_org,

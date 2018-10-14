@@ -272,7 +272,7 @@ class IndexView(View):
                           'all_banner': all_banner,
                           'courses': courses,
                           'banner_courses': banner_courses,
-                          'course_org': course_org,
+                          'course_orgs': course_org,
                       })
 
 
